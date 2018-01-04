@@ -31,14 +31,16 @@ set(SOURCE_CPP_FILES
 		${SOURCE_DIR}/ConfigurationReader.cpp
 		${SOURCE_DIR}/HeatTransferSolver.cpp
 		${SOURCE_DIR}/AnalyticSolver.cpp
-		${SOURCE_DIR}/ExportUtils.cpp)
+		${SOURCE_DIR}/ExportUtils.cpp
+		${SOURCE_DIR}/StationarySolver.cpp)
 
 set(INCLUDE_FILES 
 		${INCLUDE_DIR}/SimulationConfiguration.h
 		${INCLUDE_DIR}/ConfigurationReader.h
 		${INCLUDE_DIR}/HeatTransferSolver.h
 		${INCLUDE_DIR}/AnalyticSolver.h
-		${INCLUDE_DIR}/ExportUtils.h)
+		${INCLUDE_DIR}/ExportUtils.h
+		${INCLUDE_DIR}//StationarySolver.h)
 		
 add_executable(htsim ${SOURCE_CPP_FILES})
 
