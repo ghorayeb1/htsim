@@ -6,6 +6,7 @@
 #include "ConfigurationReader.h"
 #include "HeatTransferSolver.h"
 #include "AnalyticSolver.h"
+#include "StationarySolver.h"
 #include "Exportutils.h"
 
 int runSimulation(const SimulationConfiguration *config);
@@ -40,9 +41,15 @@ int runSimulation(const SimulationConfiguration *config)
 	myAnalyticSolver->printParams();
 	myAnalyticSolver->solve();
 
-	ExportUtils::exportToCSV(myAnalyticSolver, "exact", "sim-result.csv");
+	ExportUtils::exportToCSV(myAnalyticSolver, "exact", "analytic-result.csv");
 
 	// Stationary Model
+	HeatTransferSolver *myStationarySolver = new StationarySolver(*config);
+
+	myStationarySolver->printParams();
+	myStationarySolver->solve();
+
+	ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "sim-result.csv");
 
 	return RES_OK;
 }
