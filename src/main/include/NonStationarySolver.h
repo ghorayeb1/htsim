@@ -12,7 +12,9 @@ public:
 	virtual void solve();
 
 protected:
-	void initAXF();
+	friend class ExportUtils;
+
+	void initAXF(bool zeroPhi);
 	void calculateMatrixLU();
 	void calculateLYF();
 	void calculateUXY();
@@ -30,6 +32,10 @@ protected:
 
 	double *bL;
 	double *cU;
+
+	double *discretTemprature;
+	int time_steps_nbr;
+	double time_Step;
 };
 
 #endif

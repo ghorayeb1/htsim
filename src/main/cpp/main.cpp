@@ -53,13 +53,15 @@ int runSimulation(const SimulationConfiguration *config)
 	ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "stationary-result.csv");
 
 	// Non Stationary Model
-	HeatTransferSolver *myNonStationarySolver = new NonStationarySolver(*config);
+	NonStationarySolver *myNonStationarySolver = new NonStationarySolver(*config);
 
 	myNonStationarySolver->printParams();
 	myNonStationarySolver->solve();
 
 	ExportUtils::exportToCSV(myNonStationarySolver,"non-stationary", myStationarySolver, "stationary", myAnalyticSolver, "exact", "nonstationary-result.csv");
 	
+	ExportUtils::exportToCSV(myNonStationarySolver, "non-stationary-discrete.csv",false);
+
 	delete myAnalyticSolver;
 	delete myStationarySolver;
 	delete myNonStationarySolver;

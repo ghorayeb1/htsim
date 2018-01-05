@@ -6,7 +6,7 @@ class SimulationConfiguration
 public:
 	SimulationConfiguration();
 	SimulationConfiguration(const SimulationConfiguration &obj);
-	SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz);
+	SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz, int ConstantPhi);
 	~SimulationConfiguration();
 
 	void printConfiguraiton() const;
@@ -30,6 +30,7 @@ public:
 	int getMx() { return Mx; }
 	int getMy() { return My; }
 	int getMz() { return Mz; }
+	int getConstantPhi(){ return ConstantPhi; }
 
 private:
 	friend class HeatTransferSolver;
@@ -53,6 +54,7 @@ private:
 	int Mx;
 	int My;
 	int Mz;
+	int ConstantPhi;
 };
 
 #endif

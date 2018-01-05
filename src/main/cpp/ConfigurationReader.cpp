@@ -33,6 +33,7 @@ int ConfigurationReader::parseConfiguration()
 	double Rho = 0;
 	double Cp = 0;
 	int stationnary = 0;
+	int ConstantPhi = 0;
 	int TFinal = 0;
 	int N = 0;
 	int Mx = 0;
@@ -105,7 +106,9 @@ int ConfigurationReader::parseConfiguration()
 		//Cp
 		parseDouble(options["Cp"], Cp);
 		// stationnary
-		parseInt(options["stationnary"],stationnary);
+		parseInt(options["stationnary"], stationnary);
+		// ConstantPhi
+		parseInt(options["ConstantPhi"], ConstantPhi);
 		// TFinal
 		parseInt(options["TFinal"],TFinal);
 		// M
@@ -122,7 +125,7 @@ int ConfigurationReader::parseConfiguration()
 	}
 	//Create Configuration Object
 	if (!error && this->config == NULL) {
-		this->config = new SimulationConfiguration(Lx, Ly, Lz, M, Phi, hc, Te, K, Rho, Cp, stationnary, TFinal, N, Mx, My, Mz);
+		this->config = new SimulationConfiguration(Lx, Ly, Lz, M, Phi, hc, Te, K, Rho, Cp, stationnary, TFinal, N, Mx, My, Mz,ConstantPhi);
 	}
 
 	return error;

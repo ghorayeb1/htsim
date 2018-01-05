@@ -4,8 +4,11 @@
 NonStationarySolver::NonStationarySolver(const SimulationConfiguration &cfg)
 	:HeatTransferSolver(cfg)
 	, isAllocated(false)
+	, time_steps_nbr(cfg.N)
+	, time_Step(cfg.TFinal / (double) cfg.N)
 {
 	allocateStorage();
+	discretTemprature = new double[this->cfg->N * domainSize];
 }
 
 
@@ -20,6 +23,8 @@ NonStationarySolver::~NonStationarySolver()
 	if (X != NULL) delete X;
 	if (bL != NULL) delete bL;
 	if (cU != NULL) delete cU;
+
+	if (discretTemprature != NULL) delete discretTemprature;
 }
 
 void NonStationarySolver::solve()
@@ -31,11 +36,15 @@ void NonStationarySolver::solve()
 	for (int i = 0; i < domainSize; i++)
 	{
 		temperature[i] = Te;
+		discretTemprature[i] = Te;
 	}
 	int N = this->cfg->N;
+	int ConstantPhi = this->cfg->ConstantPhi;
+	bool zeroPhi = false;
 	for (int n = 1; n < N; n++)
 	{
-		initAXF();
+		if ( ConstantPhi == 0 && (((int)(n*time_Step) % 30) == 0)) zeroPhi = !zeroPhi;
+		initAXF(zeroPhi);
 		calculateMatrixLU();
 		calculateLYF();
 		calculateUXY();
@@ -43,6 +52,7 @@ void NonStationarySolver::solve()
 		for (int i = 0; i < domainSize; i++)
 		{
 			temperature[i] = X[i];
+			discretTemprature[n*domainSize + i] = temperature[i];
 		}
 	}
 
@@ -64,11 +74,11 @@ void NonStationarySolver::allocateStorage()
 	isAllocated = true;
 }
 
-void NonStationarySolver::initAXF()
+void NonStationarySolver::initAXF(bool zeroPhi)
 {
 	int M = cfg->M;
 	double Te = cfg->Te;
-	double Phi = cfg->Phi;
+	double Phi = zeroPhi? 0: cfg->Phi;
 	double h = cfg->Lx / (double)cfg->M;
 	double k = cfg->K;
 	double p = 2 * (cfg->Lx + cfg->Ly);

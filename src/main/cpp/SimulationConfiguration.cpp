@@ -17,7 +17,8 @@ SimulationConfiguration::SimulationConfiguration()
 	N(0),
 	Mx(0),
 	My(0),
-	Mz(0)
+	Mz(0),
+	ConstantPhi(0)
 {
 }
 
@@ -37,11 +38,12 @@ SimulationConfiguration::SimulationConfiguration(const SimulationConfiguration &
 	N(obj.N),
 	Mx(obj.Mx),
 	My(obj.My),
-	Mz(obj.Mz)
+	Mz(obj.Mz),
+	ConstantPhi(obj.ConstantPhi)
 {
 }
 
-SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz)
+SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz, int ConstantPhi)
 	:Lx(Lx),
 	Ly(Ly),
 	Lz(Lz),
@@ -57,7 +59,8 @@ SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz
 	N(N),
 	Mx(Mx),
 	My(My),
-	Mz(Mz)
+	Mz(Mz),
+	ConstantPhi(ConstantPhi)
 {
 }
 
@@ -78,6 +81,7 @@ SimulationConfiguration::~SimulationConfiguration()
 	std::cout << "Rho=" << Rho << std::endl;
 	std::cout << "Cp=" << Cp << std::endl;
 	std::cout << "stationary=" << stationnary << std::endl;
+	std::cout << "ConstantPhi=" << ConstantPhi << std::endl;
 	std::cout << "TFinal=" << TFinal << std::endl;
 	std::cout << "N=" << N << std::endl;
 	std::cout << "Mx=" << Mx << std::endl;
