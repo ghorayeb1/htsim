@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 
 ExportUtils::ExportUtils()
 {
@@ -19,7 +20,9 @@ void ExportUtils::exportToCSV(HeatTransferSolver *solver, std::string series_nam
 	for (int i = 0; i < solver->domainSize; i++)
 	{
 		double x = i * solver->step_size;
-		out << x << "," << solver->temperature[i] << std::endl;
+		out << x;
+		out << "," << std::fixed << std::setprecision(12) << solver->temperature[i];
+		out << std::endl;
 	}
 	out.close();
 }
@@ -31,7 +34,10 @@ void ExportUtils::exportToCSV(HeatTransferSolver *solver1, std::string series_na
 	for (int i = 0; i < solver1->domainSize; i++)
 	{
 		double x = i * solver1->step_size;
-		out << x << "," << solver1->temperature[i] << "," << solver2->temperature[i] << std::endl;
+		out << x;
+		out << "," << std::fixed << std::setprecision(12) << solver1->temperature[i];
+		out << "," << std::fixed << std::setprecision(12) << solver2->temperature[i];
+		out << std::endl;
 	}
 	out.close();
 }
@@ -43,7 +49,11 @@ void ExportUtils::exportToCSV(HeatTransferSolver *solver1, std::string series_na
 	for (int i = 0; i < solver1->domainSize; i++)
 	{
 		double x = i * solver1->step_size;
-		out << x << "," << solver1->temperature[i] << "," << solver2->temperature[i] << "," << solver3->temperature[i] << std::endl;
+		out << x;
+		out << "," << std::fixed << std::setprecision(12) << solver1->temperature[i];
+		out << "," << std::fixed << std::setprecision(12) << solver2->temperature[i];
+		out << "," << std::fixed << std::setprecision(12) << solver3->temperature[i];
+		out << std::endl;
 	}
 	out.close();
 }

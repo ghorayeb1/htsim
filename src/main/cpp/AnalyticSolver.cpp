@@ -33,6 +33,6 @@ inline double AnalyticSolver::computeAnalyticValue(int i)
 	double X1 = ((double)cosh(sqrt_a_lx) / (double)(sqrt_a * (double)sinh(sqrt_a_lx)));
 	double X2 = ((double)cosh(sqrt_a * (cfg->Lx - x))) / (double)((double)cosh(sqrt_a_lx));
 
-	temprature_exact = cfg->Te + ((cfg->Phi) / (double)(cfg->K)) * X1 * X2;
+	temprature_exact = cfg->Te + cfg->Phi * X1 * X2 / (double)cfg->K;
 	return temprature_exact;
 }
