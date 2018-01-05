@@ -99,7 +99,7 @@ void StationarySolver::calculateMatrixLU()
 	for (int i = 1; i < domainSize-1; i++)
 	{
 		bL[i] = b[i] - a[i] * cU[i-1];
-		cU[i] = c[i]/bL[i];
+		cU[i] = c[i]/(double)bL[i];
 	}
 	bL[M] = b[M]-a[M]*cU[M-1];
 }
@@ -107,10 +107,10 @@ void StationarySolver::calculateMatrixLU()
 void StationarySolver::calculateLYF()
 {
 	std::cout << "calculateLYF" << std::endl;
-	Y[0] = F[0] / bL[0];
+	Y[0] = F[0] / (double)bL[0];
 	for (int i = 1; i < domainSize; i++)
 	{
-		Y[i] = (F[i]  - a[i] *Y[i-1])/ bL[i];
+		Y[i] = (F[i]  - a[i] *Y[i-1])/ (double)bL[i];
 	}
 }
 

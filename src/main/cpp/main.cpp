@@ -7,6 +7,7 @@
 #include "HeatTransferSolver.h"
 #include "AnalyticSolver.h"
 #include "StationarySolver.h"
+#include "NonStationarySolver.h"
 #include "Exportutils.h"
 
 int runSimulation(const SimulationConfiguration *config);
@@ -49,7 +50,19 @@ int runSimulation(const SimulationConfiguration *config)
 	myStationarySolver->printParams();
 	myStationarySolver->solve();
 
-	ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "sim-result.csv");
+	ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "stationary-result.csv");
+
+	// Non Stationary Model
+	HeatTransferSolver *myNonStationarySolver = new NonStationarySolver(*config);
+
+	myNonStationarySolver->printParams();
+	myNonStationarySolver->solve();
+
+	ExportUtils::exportToCSV(myNonStationarySolver,"non-stationary", myStationarySolver, "stationary", myAnalyticSolver, "exact", "nonstationary-result.csv");
+	
+	delete myAnalyticSolver;
+	delete myStationarySolver;
+	delete myNonStationarySolver;
 
 	return RES_OK;
 }

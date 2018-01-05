@@ -26,12 +26,12 @@ inline double AnalyticSolver::computeAnalyticValue(int i)
 	double p = 2 * (cfg->Lx + cfg->Ly);
 	double S = cfg->Ly * cfg->Lz;
 	double a = (cfg->hc * p) / (double)(cfg->K * S);
-	double sqrt_a = sqrt(a);
+	double sqrt_a = (double)sqrt(a);
 	double sqrt_a_lx = sqrt_a * cfg->Lx;
 	double h = cfg->Lx / (double)cfg->M;
 	double x = i * h;
-	double X1 = (cosh(sqrt_a_lx) / (double)(sqrt_a * sinh(sqrt_a_lx)));
-	double X2 = (cosh(sqrt_a * (cfg->Lx - x))) / (double)(cosh(sqrt_a_lx));
+	double X1 = ((double)cosh(sqrt_a_lx) / (double)(sqrt_a * (double)sinh(sqrt_a_lx)));
+	double X2 = ((double)cosh(sqrt_a * (cfg->Lx - x))) / (double)((double)cosh(sqrt_a_lx));
 
 	temprature_exact = cfg->Te + ((cfg->Phi) / (double)(cfg->K)) * X1 * X2;
 	return temprature_exact;

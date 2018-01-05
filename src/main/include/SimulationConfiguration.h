@@ -6,21 +6,23 @@ class SimulationConfiguration
 public:
 	SimulationConfiguration();
 	SimulationConfiguration(const SimulationConfiguration &obj);
-	SimulationConfiguration(int Lx, int Ly, int Lz, int M, double Phi, double hc, int Te, int stationnary, int TFinal, int N, int Mx, int My, int Mz);
+	SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz);
 	~SimulationConfiguration();
 
 	void printConfiguraiton() const;
-	int getLx() { return Lx; }
-	int getLy() { return Ly; }
-	int getLz() { return Lz; }
+	double getLx() { return Lx; }
+	double getLy() { return Ly; }
+	double getLz() { return Lz; }
 
 	int getM() { return M; }
 
 	double getPhi() { return Phi; }
 	double getHc() { return hc; }
 
-	int getTe() { return Te; }
-	int getK() { return K; }
+	double getTe() { return Te; }
+	double getK() { return K; }
+	double getRho() { return Rho; }
+	double getCp() { return Cp; }
 
 	int getStationnary() { return stationnary; }
 	int getTFinal() { return TFinal; }
@@ -35,14 +37,16 @@ private:
 	friend class StationarySolver;
 	friend class NonStationarySolver;
 
-	int Lx;
-	int Ly;
-	int Lz;
+	double Lx;
+	double Ly;
+	double Lz;
 	int M;
 	double Phi;
 	double hc;
-	int Te;
-	int K;
+	double Te;
+	double K;
+	double Rho;
+	double Cp;
 	int stationnary;
 	int TFinal;
 	int N;

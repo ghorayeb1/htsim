@@ -3,6 +3,7 @@
 
 NonStationarySolver::NonStationarySolver(const SimulationConfiguration &cfg)
 	:HeatTransferSolver(cfg)
+	, isAllocated(false)
 {
 	allocateStorage();
 }
@@ -23,24 +24,28 @@ NonStationarySolver::~NonStationarySolver()
 
 void NonStationarySolver::solve()
 {
-	std::cout << "[Stationary solver]" << std::endl;
-
-	int N = this->cfg->N;
-	for (int n = 0; n < N; n++)
-	{
-		initAXF();
-
-	}
-
-	initAXF();
-	calculateMatrixLU();
-	calculateLYF();
-	calculateUXY();
-
+	std::cout << "[Non Stationary solver]" << std::endl;
+	// n== 0
+	// init T0
+	double Te = cfg->Te;
 	for (int i = 0; i < domainSize; i++)
 	{
-		temperature[i] = X[i];
+		temperature[i] = Te;
 	}
+	int N = this->cfg->N;
+	for (int n = 1; n < N; n++)
+	{
+		initAXF();
+		calculateMatrixLU();
+		calculateLYF();
+		calculateUXY();
+		// Tn = Tn+1
+		for (int i = 0; i < domainSize; i++)
+		{
+			temperature[i] = X[i];
+		}
+	}
+
 }
 
 void NonStationarySolver::allocateStorage()
@@ -61,7 +66,6 @@ void NonStationarySolver::allocateStorage()
 
 void NonStationarySolver::initAXF()
 {
-	std::cout << "initAXF" << std::endl;
 	int M = cfg->M;
 	double Te = cfg->Te;
 	double Phi = cfg->Phi;
@@ -72,6 +76,12 @@ void NonStationarySolver::initAXF()
 	double kh = k / (double)h;
 	double kh2 = k / (double)(h*h);
 	double hcpS = cfg->hc * p / (double)S;
+	
+	double Rho = cfg->Rho;
+	double Cp = cfg->Cp;
+	double Dt = cfg->TFinal / (double)cfg->N;
+	double RhoCp = Rho * Cp;
+	double RhoCpDt = RhoCp / (double)Dt;
 
 	for (int i = 0; i < domainSize; i++)
 	{
@@ -82,7 +92,7 @@ void NonStationarySolver::initAXF()
 
 	for (int i = 0; i < domainSize; i++)
 	{
-		b[i] = 2 * kh2 + hcpS;
+		b[i] = 2 * kh2 + hcpS + RhoCpDt;
 	}
 	b[0] = kh;
 	b[M] = kh;
@@ -96,7 +106,7 @@ void NonStationarySolver::initAXF()
 
 	for (int i = 0; i < domainSize; i++)
 	{
-		F[i] = hcpS * Te;
+		F[i] = hcpS * Te + RhoCp * temperature[i] / (double)Dt;
 	}
 	F[0] = Phi;
 	F[M] = 0;
@@ -104,7 +114,6 @@ void NonStationarySolver::initAXF()
 
 void NonStationarySolver::calculateMatrixLU()
 {
-	std::cout << "calculateMatrixLU" << std::endl;
 	int M = cfg->M;
 
 	bL[0] = b[0];
@@ -112,24 +121,22 @@ void NonStationarySolver::calculateMatrixLU()
 	for (int i = 1; i < domainSize - 1; i++)
 	{
 		bL[i] = b[i] - a[i] * cU[i - 1];
-		cU[i] = c[i] / bL[i];
+		cU[i] = c[i] / (double)bL[i];
 	}
 	bL[M] = b[M] - a[M] * cU[M - 1];
 }
 
 void NonStationarySolver::calculateLYF()
 {
-	std::cout << "calculateLYF" << std::endl;
-	Y[0] = F[0] / bL[0];
+	Y[0] = F[0] / (double)bL[0];
 	for (int i = 1; i < domainSize; i++)
 	{
-		Y[i] = (F[i] - a[i] * Y[i - 1]) / bL[i];
+		Y[i] = (F[i] - a[i] * Y[i - 1]) / (double)bL[i];
 	}
 }
 
 void NonStationarySolver::calculateUXY()
 {
-	std::cout << "calculateUXY" << std::endl;
 	int M = cfg->M;
 	X[M] = Y[M];
 

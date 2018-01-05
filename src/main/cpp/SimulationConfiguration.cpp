@@ -9,7 +9,9 @@ SimulationConfiguration::SimulationConfiguration()
 	Phi(0),
 	hc(0),
 	Te(0),
-	K(164),
+	K(0),
+	Rho(0),
+	Cp(0),
 	stationnary(0),
 	TFinal(0),
 	N(0),
@@ -28,6 +30,8 @@ SimulationConfiguration::SimulationConfiguration(const SimulationConfiguration &
 	hc(obj.hc),
 	Te(obj.Te),
 	K(obj.K),
+	Rho(obj.Rho),
+	Cp(obj.Cp),
 	stationnary(obj.stationnary),
 	TFinal(obj.TFinal),
 	N(obj.N),
@@ -37,7 +41,7 @@ SimulationConfiguration::SimulationConfiguration(const SimulationConfiguration &
 {
 }
 
-SimulationConfiguration::SimulationConfiguration(int Lx, int Ly, int Lz, int M, double Phi, double hc, int Te, int stationnary, int TFinal, int N, int Mx, int My, int Mz)
+SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz)
 	:Lx(Lx),
 	Ly(Ly),
 	Lz(Lz),
@@ -45,7 +49,9 @@ SimulationConfiguration::SimulationConfiguration(int Lx, int Ly, int Lz, int M, 
 	Phi(Phi),
 	hc(hc),
 	Te(Te),
-	K(164),
+	K(K),
+	Rho(Rho),
+	Cp(Cp),
 	stationnary(stationnary),
 	TFinal(TFinal),
 	N(N),
@@ -69,6 +75,8 @@ SimulationConfiguration::~SimulationConfiguration()
 	std::cout << "hc=" << hc << std::endl;
 	std::cout << "Te=" << Te << std::endl;
 	std::cout << "K=" << K << std::endl;
+	std::cout << "Rho=" << Rho << std::endl;
+	std::cout << "Cp=" << Cp << std::endl;
 	std::cout << "stationary=" << stationnary << std::endl;
 	std::cout << "TFinal=" << TFinal << std::endl;
 	std::cout << "N=" << N << std::endl;

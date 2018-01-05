@@ -22,13 +22,16 @@ ConfigurationReader::~ConfigurationReader()
 int ConfigurationReader::parseConfiguration()
 {
 	int error = 0;
-	int Lx = 0;
-	int Ly = 0;
-	int Lz = 0;
+	double Lx = 0;
+	double Ly = 0;
+	double Lz = 0;
 	int M = 0;
 	double Phi = 0;
 	double hc = 0;
-	int Te = 0;
+	double Te = 0;
+	double K = 0;
+	double Rho = 0;
+	double Cp = 0;
 	int stationnary = 0;
 	int TFinal = 0;
 	int N = 0;
@@ -84,9 +87,9 @@ int ConfigurationReader::parseConfiguration()
 		}
 		std::cout << "Parsing Options..." << std::endl;
 		// Lx, Ly, Lz
-		parseInt(options["Lx"],Lx);
-		parseInt(options["Ly"], Ly);
-		parseInt(options["Lz"], Lz);
+		parseDouble(options["Lx"], Lx);
+		parseDouble(options["Ly"], Ly);
+		parseDouble(options["Lz"], Lz);
 		// M
 		parseInt(options["M"],M);
 		// Phi
@@ -94,7 +97,13 @@ int ConfigurationReader::parseConfiguration()
 		// hc
 		parseDouble(options["hc"],hc);
 		// Te
-		parseInt(options["Te"],Te);
+		parseDouble(options["Te"], Te);
+		//K
+		parseDouble(options["K"], K);
+		//Rho
+		parseDouble(options["Rho"], Rho);
+		//Cp
+		parseDouble(options["Cp"], Cp);
 		// stationnary
 		parseInt(options["stationnary"],stationnary);
 		// TFinal
@@ -113,7 +122,7 @@ int ConfigurationReader::parseConfiguration()
 	}
 	//Create Configuration Object
 	if (!error && this->config == NULL) {
-		this->config = new SimulationConfiguration(Lx, Ly, Lz, M, Phi, hc, Te, stationnary, TFinal, N, Mx, My, Mz);
+		this->config = new SimulationConfiguration(Lx, Ly, Lz, M, Phi, hc, Te, K, Rho, Cp, stationnary, TFinal, N, Mx, My, Mz);
 	}
 
 	return error;
