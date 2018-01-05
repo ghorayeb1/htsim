@@ -33,6 +33,7 @@ private:
 	friend class HeatTransferSolver;
 	friend class AnalyticSolver;
 	friend class StationarySolver;
+	friend class NonStationarySolver;
 
 	int Lx;
 	int Ly;
