@@ -24,8 +24,6 @@ StationarySolver::~StationarySolver()
 
 void StationarySolver::solve()
 {
-	std::cout << "[Stationary solver]" << std::endl;
-
 	calculateMatrixLU();
 	calculateLYF();
 	calculateUXY();
@@ -38,7 +36,6 @@ void StationarySolver::solve()
 
 void StationarySolver::initAXF()
 {
-	std::cout << "initAXF" << std::endl;
 	int M = cfg->M;
 	double Te = cfg->Te;
 	double Phi = cfg->Phi;
@@ -91,7 +88,6 @@ void StationarySolver::initAXF()
 
 void StationarySolver::calculateMatrixLU()
 {
-	std::cout << "calculateMatrixLU" << std::endl;
 	int M = cfg->M;
 
 	bL[0] = b[0];
@@ -106,7 +102,6 @@ void StationarySolver::calculateMatrixLU()
 
 void StationarySolver::calculateLYF()
 {
-	std::cout << "calculateLYF" << std::endl;
 	Y[0] = F[0] / (double)bL[0];
 	for (int i = 1; i < domainSize; i++)
 	{
@@ -116,7 +111,6 @@ void StationarySolver::calculateLYF()
 
 void StationarySolver::calculateUXY()
 {
-	std::cout << "calculateUXY" << std::endl;
 	int M = cfg->M;
 	X[M] = Y[M];
 

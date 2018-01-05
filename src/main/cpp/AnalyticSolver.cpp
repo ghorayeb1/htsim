@@ -13,7 +13,6 @@ AnalyticSolver::~AnalyticSolver()
 
 void AnalyticSolver::solve()
 {
-	std::cout << "[Analytic solver]" <<std::endl;
 	for (int i = 0; i < domainSize; i++)
 	{
 		temperature[i] = computeAnalyticValue(i);

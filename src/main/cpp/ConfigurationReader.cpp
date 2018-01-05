@@ -39,6 +39,7 @@ int ConfigurationReader::parseConfiguration()
 	int Mx = 0;
 	int My = 0;
 	int Mz = 0;
+	int ExportDiscretForFullPositions = 0;
 	// Open File Stream
 	std::string line;
 	std::ifstream cfgfile(filename);
@@ -106,7 +107,7 @@ int ConfigurationReader::parseConfiguration()
 		//Cp
 		parseDouble(options["Cp"], Cp);
 		// stationnary
-		parseInt(options["stationnary"], stationnary);
+		parseInt(options["stationary"], stationnary);
 		// ConstantPhi
 		parseInt(options["ConstantPhi"], ConstantPhi);
 		// TFinal
@@ -117,6 +118,10 @@ int ConfigurationReader::parseConfiguration()
 		parseInt(options["Mx"],Mx);
 		parseInt(options["My"],My);
 		parseInt(options["Mz"],Mz);
+
+		//ExportDiscretForFullPositions
+		parseInt(options["ExportDiscretForFullPositions"], ExportDiscretForFullPositions);
+
 		std::cout << "Done." << std::endl;
 	}
 	else {
@@ -125,7 +130,7 @@ int ConfigurationReader::parseConfiguration()
 	}
 	//Create Configuration Object
 	if (!error && this->config == NULL) {
-		this->config = new SimulationConfiguration(Lx, Ly, Lz, M, Phi, hc, Te, K, Rho, Cp, stationnary, TFinal, N, Mx, My, Mz,ConstantPhi);
+		this->config = new SimulationConfiguration(Lx, Ly, Lz, M, Phi, hc, Te, K, Rho, Cp, stationnary, TFinal, N, Mx, My, Mz, ConstantPhi, ExportDiscretForFullPositions);
 	}
 
 	return error;

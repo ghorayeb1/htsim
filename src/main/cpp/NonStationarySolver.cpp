@@ -29,7 +29,6 @@ NonStationarySolver::~NonStationarySolver()
 
 void NonStationarySolver::solve()
 {
-	std::cout << "[Non Stationary solver]" << std::endl;
 	// n== 0
 	// init T0
 	double Te = cfg->Te;

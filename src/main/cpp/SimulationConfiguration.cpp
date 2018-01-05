@@ -18,7 +18,8 @@ SimulationConfiguration::SimulationConfiguration()
 	Mx(0),
 	My(0),
 	Mz(0),
-	ConstantPhi(0)
+	ConstantPhi(0),
+	ExportDiscretForFullPositions(0)
 {
 }
 
@@ -39,11 +40,12 @@ SimulationConfiguration::SimulationConfiguration(const SimulationConfiguration &
 	Mx(obj.Mx),
 	My(obj.My),
 	Mz(obj.Mz),
-	ConstantPhi(obj.ConstantPhi)
+	ConstantPhi(obj.ConstantPhi),
+	ExportDiscretForFullPositions(obj.ExportDiscretForFullPositions)
 {
 }
 
-SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz, int ConstantPhi)
+SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz, int M, double Phi, double hc, double Te, double K, double Rho, double Cp, int stationnary, int TFinal, int N, int Mx, int My, int Mz, int ConstantPhi, int ExportDiscretForFullPositions)
 	:Lx(Lx),
 	Ly(Ly),
 	Lz(Lz),
@@ -60,7 +62,8 @@ SimulationConfiguration::SimulationConfiguration(double Lx, double Ly, double Lz
 	Mx(Mx),
 	My(My),
 	Mz(Mz),
-	ConstantPhi(ConstantPhi)
+	ConstantPhi(ConstantPhi),
+	ExportDiscretForFullPositions(ExportDiscretForFullPositions)
 {
 }
 
@@ -87,4 +90,5 @@ SimulationConfiguration::~SimulationConfiguration()
 	std::cout << "Mx=" << Mx << std::endl;
 	std::cout << "My=" << My << std::endl;
 	std::cout << "Mz=" << Mz << std::endl;
+	std::cout << "ExportDiscretForFullPositions= " << ExportDiscretForFullPositions << std::endl;
 }

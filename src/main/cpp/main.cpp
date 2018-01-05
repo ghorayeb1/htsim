@@ -39,32 +39,62 @@ int runSimulation(const SimulationConfiguration *config)
 	// Reference : Analytic Solution
 	HeatTransferSolver *myAnalyticSolver = new AnalyticSolver(*config);
 	
+	std::cout << "[Analytic solver]:Parameters" << std::endl;
 	myAnalyticSolver->printParams();
+	std::cout << "[Analytic solver]:Start..." << std::endl;
 	myAnalyticSolver->solve();
+	std::cout << "[Analytic solver]:End." << std::endl;
 
+	std::cout << "[Analytic solver]:Export to CSV <analytic-result.csv> Start..." << std::endl;
 	ExportUtils::exportToCSV(myAnalyticSolver, "exact", "analytic-result.csv");
+	std::cout << "[Analytic solver]:Export to CSV End." << std::endl;
 
-	// Stationary Model
-	HeatTransferSolver *myStationarySolver = new StationarySolver(*config);
+	if (config->getStationnary() == 1){
+		// Stationary Model
+		HeatTransferSolver *myStationarySolver = new StationarySolver(*config);
 
-	myStationarySolver->printParams();
-	myStationarySolver->solve();
+		std::cout << "[Stationary solver]:Parameters" << std::endl;
+		myStationarySolver->printParams();
+		std::cout << "[Stationary solver]:Start..." << std::endl;
+		myStationarySolver->solve();
+		std::cout << "[Stationary solver]:End." << std::endl;
 
-	ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "stationary-result.csv");
+		std::cout << "[Stationary solver]:Export to CSV <stationary-result.csv> Start..." << std::endl;
+		ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "stationary-result.csv");
+		std::cout << "[Stationary solver]:Export to CSV End." << std::endl;
 
-	// Non Stationary Model
-	NonStationarySolver *myNonStationarySolver = new NonStationarySolver(*config);
+		delete myStationarySolver;
+	}
+	else{
+		// Non Stationary Model
+		NonStationarySolver *myNonStationarySolver = new NonStationarySolver(*config);
 
-	myNonStationarySolver->printParams();
-	myNonStationarySolver->solve();
+		std::cout << "[Non Stationary solver]:Parameters" << std::endl;
+		myNonStationarySolver->printParams();
+		std::cout << "[Non Stationary solver]:Start..." << std::endl;
+		myNonStationarySolver->solve();
+		std::cout << "[Non Stationary solver]:End." << std::endl;
 
-	ExportUtils::exportToCSV(myNonStationarySolver,"non-stationary", myStationarySolver, "stationary", myAnalyticSolver, "exact", "nonstationary-result.csv");
-	
-	ExportUtils::exportToCSV(myNonStationarySolver, "non-stationary-discrete.csv",false);
+		std::cout << "[Non Stationary solver]:Export to CSV <nonstationary-result.csv> Start..." << std::endl;
+		ExportUtils::exportToCSV(myNonStationarySolver, "non-stationary", myAnalyticSolver, "exact", "nonstationary-result.csv");
+		std::cout << "[Non Stationary solver]:Export to CSV End." << std::endl;
+
+		
+		if (config->getExportDiscretForFullPositions() == 0){
+			std::cout << "[Non Stationary solver]:Export to CSV <non-stationary-discrete-partial-positions.csv> Start..." << std::endl;
+			ExportUtils::exportToCSV(myNonStationarySolver, "non-stationary-discrete-partial-positions.csv", false);
+			std::cout << "[Non Stationary solver]:Export to CSV End." << std::endl;
+		}
+		else{
+			std::cout << "[Non Stationary solver]:Export to CSV <non-stationary-discrete-all-positions.csv> Start..." << std::endl;
+			ExportUtils::exportToCSV(myNonStationarySolver, "non-stationary-discrete-all-positions.csv", true);
+			std::cout << "[Non Stationary solver]:Export to CSV End." << std::endl;
+		}
+		
+
+		delete myNonStationarySolver;
+	}
 
 	delete myAnalyticSolver;
-	delete myStationarySolver;
-	delete myNonStationarySolver;
-
 	return RES_OK;
 }
