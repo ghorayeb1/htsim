@@ -114,12 +114,12 @@ void ExportUtils::exportToCSV(NonStationarySolver *solver, std::string filename,
 	out.close();
 }
 
-void ExportUtils::exportToVTK(HeatTransferSolver *solver, TempratureInterpolator *interpolator, std::string solution, std::string filename)
+void ExportUtils::exportToVTK(HeatTransferSolver *solver, TempratureInterpolator *interpolator, std::string solution)
 {
-	std::ofstream vtk(filename);
-	int Mx = solver->cfg->getMx();
-	int My = solver->cfg->getMy();
-	int Mz = solver->cfg->getMz();
+	std::ofstream vtk(solution + ".vtk");
+	int Mx = solver->cfg->getMx() + 1;
+	int My = solver->cfg->getMy() + 1;
+	int Mz = solver->cfg->getMz() + 1;
 	int points = Mx * My * Mz;
 
 	vtk << "# vtk DataFile Version 2.0" << std::endl;
@@ -141,9 +141,9 @@ void ExportUtils::exportToVTK(HeatTransferSolver *solver, TempratureInterpolator
 		<< "float"
 		<< std::endl;
 
-	for(int k = 0; k <= Mz; k++)
-		for(int j=0; j<= My; j++)
-			for (int i = 0; i <= Mx; i++)
+	for(int k = 0; k < Mz; k++)
+		for(int j=0; j< My; j++)
+			for (int i = 0; i < Mx; i++)
 			{
 				vtk << i << " " << j << " " << k << std::endl;
 			}
@@ -159,12 +159,71 @@ void ExportUtils::exportToVTK(HeatTransferSolver *solver, TempratureInterpolator
 		<< "float"
 		<< std::endl;
 
-	for (int k = 0; k <= Mz; k++)
-		for (int j = 0; j <= My; j++)
-			for (int i = 0; i <= Mx; i++)
+	for (int k = 0; k < Mz; k++)
+		for (int j = 0; j < My; j++)
+			for (int i = 0; i < Mx; i++)
 			{
 				double T = interpolator->getTempratureAt(i);
 				vtk << T << std::endl;
 			}
 	vtk.close();
+}
+
+
+void ExportUtils::exportToVTK(NonStationarySolver *solver, TemporalTempratureInterpolator *interpolator, std::string solution)
+{
+	for (int n = 0; n < interpolator->getTimeSteps(); n++) {
+		std::ofstream vtk(solution + "." + std::to_string(n) + ".vtk" );
+
+		int Mx = solver->cfg->getMx() + 1;
+		int My = solver->cfg->getMy() + 1;
+		int Mz = solver->cfg->getMz() + 1;
+		int points = Mx * My * Mz;
+
+		vtk << "# vtk DataFile Version 2.0" << std::endl;
+		vtk << "vtk output" << std::endl;
+		vtk << "ASCII" << std::endl;
+		vtk << "DATASET STRUCTURED_GRID" << std::endl;
+		vtk << "DIMENSIONS"
+			<< " "
+			<< Mx
+			<< " "
+			<< My
+			<< " "
+			<< Mz
+			<< std::endl;
+		vtk << "POINTS"
+			<< " "
+			<< points
+			<< " "
+			<< "float"
+			<< std::endl;
+
+		for (int k = 0; k < Mz; k++)
+			for (int j = 0; j < My; j++)
+				for (int i = 0; i < Mx; i++)
+				{
+					vtk << i << " " << j << " " << k << std::endl;
+				}
+		vtk.flush();
+
+		vtk << "FIELD FieldData 1" << std::endl;
+		vtk << solution
+			<< " "
+			<< "1"
+			<< " "
+			<< points
+			<< " "
+			<< "float"
+			<< std::endl;
+
+		for (int k = 0; k < Mz; k++)
+			for (int j = 0; j < My; j++)
+				for (int i = 0; i < Mx; i++)
+				{
+					double T = interpolator->getTempratureAt(i, n);
+					vtk << T << std::endl;
+				}
+		vtk.close();
+	}
 }

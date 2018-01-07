@@ -10,6 +10,7 @@
 #include "NonStationarySolver.h"
 #include "Exportutils.h"
 #include "TempratureInterpolator.h"
+#include "TemporalTempratureInterpolator.h"
 
 int runSimulation(const SimulationConfiguration *config);
 
@@ -56,7 +57,7 @@ int runSimulation(const SimulationConfiguration *config)
 	std::cout << "[Analytic solver]:Interpolate End." << std::endl;
 
 	std::cout << "[Analytic solver]:Export to VTK <analytic.vtk> Start..." << std::endl;
-	ExportUtils::exportToVTK(myAnalyticSolver, interpolator0, "analytic", "analytic.vtk");
+	ExportUtils::exportToVTK(myAnalyticSolver, interpolator0, "analytic");
 	std::cout << "[Analytic solver]:Export to VTK End." << std::endl;
 
 	if (config->getStationnary() == 1){
@@ -79,7 +80,7 @@ int runSimulation(const SimulationConfiguration *config)
 		std::cout << "[Stationary solver]:Interpolate End." << std::endl;
 
 		std::cout << "[Stationary solver]:Export to VTK <stationary.vtk> Start..." << std::endl;
-		ExportUtils::exportToVTK(myStationarySolver, interpolator1,"stationary", "stationary.vtk");
+		ExportUtils::exportToVTK(myStationarySolver, interpolator1,"stationary");
 		std::cout << "[Stationary solver]:Export to VTK End." << std::endl;
 
 		delete myStationarySolver;
@@ -88,6 +89,7 @@ int runSimulation(const SimulationConfiguration *config)
 	else{
 		// Non Stationary Model
 		NonStationarySolver *myNonStationarySolver = new NonStationarySolver(*config);
+		TemporalTempratureInterpolator * interpolator2 = new TemporalTempratureInterpolator(myNonStationarySolver);
 
 		std::cout << "[Non Stationary solver]:Parameters" << std::endl;
 		myNonStationarySolver->printParams();
@@ -111,7 +113,15 @@ int runSimulation(const SimulationConfiguration *config)
 			std::cout << "[Non Stationary solver]:Export to CSV End." << std::endl;
 		}
 		
+		std::cout << "[Non Stationary solver]:Interpolate Start..." << std::endl;
+		interpolator2->interpolate();
+		std::cout << "[Non Stationary solver]:Interpolate End." << std::endl;
 
+		std::cout << "[Non Stationary solver]:Export to VTK <non-stationary.{i}.vtk> Start..." << std::endl;
+		ExportUtils::exportToVTK(myNonStationarySolver, interpolator2, "non-stationary");
+		std::cout << "[Non Stationary solver]:Export to VTK End." << std::endl;
+
+		delete interpolator2;
 		delete myNonStationarySolver;
 	}
 

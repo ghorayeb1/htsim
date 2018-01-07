@@ -13,6 +13,7 @@ public:
 
 protected:
 	friend class ExportUtils;
+	friend class TemporalTempratureInterpolator;
 
 	void initAXF(bool zeroPhi);
 	void calculateMatrixLU();
