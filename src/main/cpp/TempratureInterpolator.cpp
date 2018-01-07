@@ -80,5 +80,7 @@ int TempratureInterpolator::findLowerBound(double x)
 
 double TempratureInterpolator::interpolate(double xk1, double xk2, double T1, double T2, double x)
 {
-	return (T1 + T2)/(double)2.0;
+	double a = (T2-T1)/(double)(xk2 - xk1);
+	double b = (T1+T2 - a * (xk1+xk2)) * (double)0.5;
+	return a*x+b;
 }
