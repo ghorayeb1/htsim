@@ -8,7 +8,7 @@
 #include "AnalyticSolver.h"
 #include "StationarySolver.h"
 #include "NonStationarySolver.h"
-#include "Exportutils.h"
+#include "ExportUtils.h"
 #include "TempratureInterpolator.h"
 #include "TemporalTempratureInterpolator.h"
 
