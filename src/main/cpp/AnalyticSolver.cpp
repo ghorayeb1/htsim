@@ -1,6 +1,8 @@
 #include "AnalyticSolver.h"
 
 #include <iostream>
+#include <cmath>
+
 AnalyticSolver::AnalyticSolver(const SimulationConfiguration &cfg)
 	:HeatTransferSolver(cfg)
 {
