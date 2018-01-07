@@ -34,6 +34,7 @@ set(SOURCE_CPP_FILES
 		${SOURCE_DIR}/ExportUtils.cpp
 		${SOURCE_DIR}/StationarySolver.cpp
 		${SOURCE_DIR}/NonStationarySolver.cpp
+		${SOURCE_DIR}/TempratureInterpolator.cpp
 		)
 
 set(INCLUDE_FILES 
@@ -44,6 +45,7 @@ set(INCLUDE_FILES
 		${INCLUDE_DIR}/ExportUtils.h
 		${INCLUDE_DIR}/StationarySolver.h
 		${INCLUDE_DIR}/NonStationarySolver.h
+		${INCLUDE_DIR}/TempratureInterpolator.h
 		)
 		
 add_executable(htsim ${SOURCE_CPP_FILES})

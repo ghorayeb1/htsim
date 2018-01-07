@@ -9,6 +9,7 @@
 #include "StationarySolver.h"
 #include "NonStationarySolver.h"
 #include "Exportutils.h"
+#include "TempratureInterpolator.h"
 
 int runSimulation(const SimulationConfiguration *config);
 
@@ -38,6 +39,7 @@ int runSimulation(const SimulationConfiguration *config)
 
 	// Reference : Analytic Solution
 	HeatTransferSolver *myAnalyticSolver = new AnalyticSolver(*config);
+	TempratureInterpolator * interpolator0 = new TempratureInterpolator(myAnalyticSolver);
 	
 	std::cout << "[Analytic solver]:Parameters" << std::endl;
 	myAnalyticSolver->printParams();
@@ -49,9 +51,18 @@ int runSimulation(const SimulationConfiguration *config)
 	ExportUtils::exportToCSV(myAnalyticSolver, "exact", "analytic-result.csv");
 	std::cout << "[Analytic solver]:Export to CSV End." << std::endl;
 
+	std::cout << "[Analytic solver]:Interpolate Start..." << std::endl;
+	interpolator0->interpolate();
+	std::cout << "[Analytic solver]:Interpolate End." << std::endl;
+
+	std::cout << "[Analytic solver]:Export to VTK <analytic.vtk> Start..." << std::endl;
+	ExportUtils::exportToVTK(myAnalyticSolver, interpolator0, "analytic", "analytic.vtk");
+	std::cout << "[Analytic solver]:Export to VTK End." << std::endl;
+
 	if (config->getStationnary() == 1){
 		// Stationary Model
 		HeatTransferSolver *myStationarySolver = new StationarySolver(*config);
+		TempratureInterpolator * interpolator1 = new TempratureInterpolator(myStationarySolver);
 
 		std::cout << "[Stationary solver]:Parameters" << std::endl;
 		myStationarySolver->printParams();
@@ -63,7 +74,16 @@ int runSimulation(const SimulationConfiguration *config)
 		ExportUtils::exportToCSV(myStationarySolver, "stationary", myAnalyticSolver, "exact", "stationary-result.csv");
 		std::cout << "[Stationary solver]:Export to CSV End." << std::endl;
 
+		std::cout << "[Stationary solver]:Interpolate Start..." << std::endl;
+		interpolator1->interpolate();
+		std::cout << "[Stationary solver]:Interpolate End." << std::endl;
+
+		std::cout << "[Stationary solver]:Export to VTK <stationary.vtk> Start..." << std::endl;
+		ExportUtils::exportToVTK(myStationarySolver, interpolator1,"stationary", "stationary.vtk");
+		std::cout << "[Stationary solver]:Export to VTK End." << std::endl;
+
 		delete myStationarySolver;
+		delete interpolator1;
 	}
 	else{
 		// Non Stationary Model
@@ -96,5 +116,6 @@ int runSimulation(const SimulationConfiguration *config)
 	}
 
 	delete myAnalyticSolver;
+	delete interpolator0;
 	return RES_OK;
 }

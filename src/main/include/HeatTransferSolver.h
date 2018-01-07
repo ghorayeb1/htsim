@@ -15,6 +15,7 @@ public:
 
 protected:
 	friend class ExportUtils;
+	friend class TempratureInterpolator;
 
 	SimulationConfiguration *cfg;
 
